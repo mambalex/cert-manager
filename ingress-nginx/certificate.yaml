@@ -1,0 +1,13 @@
+# Optional. We don't have to create a certifacte object manually if we configure the ingress annotation properly
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: example-app
+  namespace: default
+spec:
+  dnsNames:
+    - mambalex.site
+  secretName: example-app-tls
+  issuerRef:
+    name: letsencrypt-cluster-issuer
+    kind: ClusterIssuer

@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-cluster-issuer # will auto generate a certificate object 
+    kubernetes.io/ingress.class: "nginx"
+  name: example-app
+spec:
+  tls:
+  - hosts:
+    - mambalex.site
+    secretName: example-app-tls
+  rules:
+  - host: mambalex.site
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: example-service
+            port: 
+              number: 80
