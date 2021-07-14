@@ -1,3 +1,13 @@
+## Introduction
+Cert manager is a tool that can generate and update certificates in Kubernetes. It's free and fully automated.
+Let's create a local k8s environment to test it out.
+
+## Create a Kubernetes cluster
+```bahs
+kind create cluster --name certmanager --image kindest/node:v1.19.1
+```
+
+## Install cert-manager
 ```bash
 # get cert-manager
 curl -LO https://github.com/jetstack/cert-manager/releases/download/v1.0.4/cert-manager.yaml
@@ -7,7 +17,7 @@ kubectl apply --validate=false -f cert-manager.yaml
 kubectl -n cert-manager get all
 ```
 
-## Self-signed certificate
+## Test self-signed certificate
 ```bash
 cd self-signed
 kubectl create ns cert-manager-test
@@ -22,6 +32,7 @@ kubectl delete ns cert-manager-test
 ```
 
 ## Ingress Controller
+Let's create a legit certificate with Let's Encrypt.
 ```
 kubectl create ns ingress-nginx
 
@@ -35,7 +46,7 @@ kubectl -n ingress-nginx --address 0.0.0.0 port-forward svc/ingress-nginx-contro
 ```
 
 ## Set up DNS
-1. Point the domain name to the public ip
+1. Point the domain name to the public ip of your local enviroment
 2. Configure port forwarding on the router
 
 ## Deploy a sample app
@@ -61,6 +72,6 @@ kubectl apply -f ingress-nginx/certificate.yaml
 ```bash
 kubectl apply -f example-app/ingress.yaml
 
-# check the cert has been issued 
+# check if the cert has been issued 
 kubectl describe certificate example-app
 ```
